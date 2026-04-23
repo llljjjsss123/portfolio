@@ -1,160 +1,1313 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>이준석</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet" />
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>이준석 · Backend Developer</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet" />
   <style>
-    body {
-      margin: 0;
-      font-family: 'Noto Sans KR', sans-serif;
-      background-color: #fff;
-      color: #1a1a1a;
-      line-height: 1.8;
-      font-size: 16px;
+    :root {
+      --bg: #050510;
+      --surface: rgba(255, 255, 255, 0.04);
+      --border: rgba(255, 255, 255, 0.08);
+      --ink: #ffffff;
+      --muted: rgba(255, 255, 255, 0.45);
+      --accent: #7c6aff;
+      --accent2: #00f5d4;
+      --accent3: #ff6b6b;
     }
-    .container {
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 60px;
+      background: rgba(5, 5, 16, 0.6);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent2);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--ink);
+    }
+
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 60px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-left {
+      flex: 1;
+    }
+
+    .hero-right {
+      flex: 0 0 420px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .terminal {
+      background: rgba(10, 10, 30, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 0;
+      backdrop-filter: blur(20px);
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(124, 106, 255, 0.15);
+      width: 380px;
+    }
+
+    .terminal-bar {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .t-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .t-dot.r {
+      background: #ff5f57;
+    }
+
+    .t-dot.y {
+      background: #febc2e;
+    }
+
+    .t-dot.g {
+      background: #28c840;
+    }
+
+    .terminal-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    .terminal-body {
+      padding: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.9;
+    }
+
+    .t-line {
+      display: flex;
+      gap: 8px;
+    }
+
+    .t-prompt {
+      color: var(--accent2);
+    }
+
+    .t-cmd {
+      color: var(--ink);
+    }
+
+    .t-out {
+      color: var(--muted);
+      padding-left: 16px;
+    }
+
+    .t-out.hi {
+      color: var(--accent2);
+    }
+
+    .t-out.warn {
+      color: #febc2e;
+    }
+
+    .t-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background: var(--accent2);
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0
+      }
+    }
+
+    .hero-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent2);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-tag::before {
+      content: '//';
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 28px;
+    }
+
+    .grad {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 460px;
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .btn {
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.22s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      color: #fff;
+      box-shadow: 0 0 24px rgba(124, 106, 255, 0.4);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 40px rgba(124, 106, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .hero-badges {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      backdrop-filter: blur(10px);
+    }
+
+    .badge.active {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .cards-section {
+      padding: 80px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .sec-header {
+      margin-bottom: 48px;
+    }
+
+    .sec-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .proj-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+    }
+
+    .proj-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(124, 106, 255, 0.08), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .proj-card:hover {
+      border-color: rgba(124, 106, 255, 0.4);
+      transform: translateY(-4px);
+    }
+
+    .proj-card:hover::before {
+      opacity: 1;
+    }
+
+    .proj-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .proj-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      border: 1px solid var(--border);
+    }
+
+    .pi-1 {
+      background: linear-gradient(135deg, rgba(124, 106, 255, 0.2), rgba(124, 106, 255, 0.05));
+    }
+
+    .pi-2 {
+      background: linear-gradient(135deg, rgba(0, 245, 212, 0.2), rgba(0, 245, 212, 0.05));
+    }
+
+    .pi-3 {
+      background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 107, 107, 0.05));
+    }
+
+    .pi-4 {
+      background: linear-gradient(135deg, rgba(254, 188, 46, 0.2), rgba(254, 188, 46, 0.05));
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      font-family: 'Space Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .s-live {
+      background: rgba(0, 245, 212, 0.1);
+      color: var(--accent2);
+      border: 1px solid rgba(0, 245, 212, 0.2);
+    }
+
+    .s-done {
+      background: rgba(124, 106, 255, 0.1);
+      color: #a78bfa;
+      border: 1px solid rgba(124, 106, 255, 0.2);
+    }
+
+    .s-dev {
+      background: rgba(254, 188, 46, 0.1);
+      color: #febc2e;
+      border: 1px solid rgba(254, 188, 46, 0.2);
+    }
+
+    .s-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: blink 1.5s infinite;
+    }
+
+    .proj-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .proj-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .proj-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .proj-tag {
+      padding: 3px 12px;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      font-family: 'Space Mono', monospace;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .proj-tag.accent {
+      border-color: rgba(124, 106, 255, 0.4);
+      color: var(--accent);
+    }
+
+    .skills-section {
+      padding: 80px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .skills-orbs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 40px;
+    }
+
+    .orb {
+      padding: 10px 22px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      backdrop-filter: blur(10px);
+      transition: all 0.25s;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .orb::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: var(--glow, rgba(124, 106, 255, 0.12));
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .orb:hover {
+      color: var(--ink);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
+
+    .orb:hover::before {
+      opacity: 1;
+    }
+
+    .orb.g1 {
+      --glow: rgba(124, 106, 255, 0.15);
+    }
+
+    .orb.g2 {
+      --glow: rgba(0, 245, 212, 0.15);
+    }
+
+    .orb.g3 {
+      --glow: rgba(255, 107, 107, 0.15);
+    }
+
+    .orb.g4 {
+      --glow: rgba(254, 188, 46, 0.15);
+    }
+
+    .exp-section {
+      padding: 80px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .exp-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 40px;
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 32px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .exp-item::before {
+      content: '';
+      position: absolute;
+      left: 179px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .exp-item::after {
+      content: '';
+      position: absolute;
+      left: 174px;
+      top: 38px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--accent);
+    }
+
+    .exp-item.current::after {
+      border-color: var(--accent2);
+    }
+
+    .exp-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      padding-top: 4px;
+      line-height: 1.8;
+    }
+
+    .exp-now {
+      color: var(--accent2);
+      font-weight: 700;
+    }
+
+    .exp-content h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .exp-co {
+      font-size: 0.82rem;
+      color: var(--accent);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .exp-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .exp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .exp-tag {
+      padding: 2px 10px;
+      border-radius: 100px;
+      font-size: 0.68rem;
+      font-family: 'Space Mono', monospace;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--surface);
+    }
+
+    /* CERT SECTION */
+    .cert-section {
+      padding: 80px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 40px;
+    }
+
+    .cert-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      transition: all 0.25s;
+    }
+
+    .cert-card:hover {
+      border-color: rgba(124, 106, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .cert-year {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .cert-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .cert-org {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .contact-section {
+      padding: 100px 60px;
+      text-align: center;
       max-width: 800px;
       margin: 0 auto;
-      padding: 80px 20px;
     }
-    section {
-      margin-bottom: 100px;
-    }
-    h1, h2 {
+
+    .contact-glow {
+      font-size: clamp(2.5rem, 6vw, 5rem);
       font-weight: 700;
-      margin-bottom: 1rem;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 20px;
     }
-    h2 {
-      font-size: 1.5rem;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 0.4rem;
+
+    .contact-sub {
+      color: var(--muted);
+      margin-bottom: 48px;
+      font-size: 1rem;
     }
-    p {
-      margin: 0.4rem 0;
+
+    .contact-row {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
     }
-    img.profile {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 1rem;
-    }
-    .project-img {
-      width: 100%;
-      max-width: 600px;
+
+    .c-btn {
+      padding: 13px 28px;
       border-radius: 8px;
-      margin: 1rem 0;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      backdrop-filter: blur(10px);
+      transition: all 0.22s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
-    .project {
-      margin-bottom: 3rem;
+
+    .c-btn:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+      box-shadow: 0 0 20px rgba(0, 245, 212, 0.15);
     }
-    a {
-      color: #1a1a1a;
-      text-decoration: underline;
+
+    .c-btn.main {
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      border: none;
+      color: #fff;
+      box-shadow: 0 0 30px rgba(124, 106, 255, 0.3);
     }
-    @media (max-width: 600px) {
-      .container {
-        padding: 60px 16px;
+
+    .c-btn.main:hover {
+      box-shadow: 0 0 50px rgba(124, 106, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      position: relative;
+      z-index: 1;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .reveal.on {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media(max-width:768px) {
+      nav {
+        padding: 16px 20px;
+      }
+
+      .hero {
+        flex-direction: column;
+        padding: 100px 20px 60px;
+        gap: 40px;
+      }
+
+      .hero-right {
+        display: none;
+      }
+
+      .cards-section,
+      .skills-section,
+      .exp-section,
+      .cert-section,
+      .contact-section {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .proj-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cert-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .exp-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .exp-item::before,
+      .exp-item::after {
+        display: none;
       }
     }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <!-- Hero -->
-    <section data-aos="fade-up">
-      <div style="text-align: center;">
-        <img src="images/ljs.jpg"  class="profile" />
-        <h1>이준석</h1>
-        <p>Java 개발자 | ✉️ wnstjr8923@naver.com </p>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <nav>
+    <a class="nav-logo" href="#">_LJS</a>
+    <ul class="nav-links">
+      <li><a href="#projects">work</a></li>
+      <li><a href="#skills">stack</a></li>
+      <li><a href="#exp">about</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section>
+    <div class="hero">
+      <div class="hero-left">
+        <p class="hero-tag">Backend Developer · 경기 부천 · 2026</p>
+        <h1>문제를 코드로<br /><span class="grad">해결하는</span><br />개발자</h1>
+        <p class="hero-desc">Java · Spring · Oracle 기반 백엔드 개발자 이준석입니다. 공공기관 웹 유지보수부터 사내 서비스 개발까지, 실무 중심으로 성장하고 있습니다.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#projects">프로젝트 보기 →</a>
+          <a class="btn btn-ghost" href="#contact">연락하기</a>
+        </div>
+        <div class="hero-badges">
+          <span class="badge active">⬤ 재직 중</span>
+          <span class="badge">Bucheon · Gyeonggi</span>
+          <span class="badge">Backend Dev</span>
+          <span class="badge">정보처리기사</span>
+        </div>
       </div>
-    </section>
-
-    <!-- About -->
-    <section data-aos="fade-up">
-      <h2>👤 About</h2>
-      <p>
-        꾸준히 성장하는 개발자를 꿈꿉니다.
-        백엔드를 중심으로 프론트엔드와 클라우드 인프라까지 두루 학습하며 풀스택 개발자로 성장하는것이 목표입니다.
-      </p>
-    </section>
-
-    <!-- Skills -->
-    <section data-aos="fade-up">
-      <h2>💻 Skills</h2>
-      <p>Java, Spring Framework, JSP, Oracle SQL, MyBatis</p>
-      <p>HTML, CSS, JavaScript, jQuery, Ajax, Bootstrap</p>
-    </section>
-
-    <!-- Projects -->
-    <section data-aos="fade-up">
-      <h2>🚀 Projects</h2>
-
-      <div class="project">
-        <h3>BREAKTIME (2023.05.15 ~ 2023.06.19)</h3>
-        <p><strong>● 설명:</strong> 사용자/사업자/관리자 기능을 포함한 숙박 예약 플랫폼</p>
-        <p><strong>● 사용 기술:</strong> Java, Spring, Oracle, JSP, jQuery, Ajax</p>
-        <p><strong>● 주요 기능:</strong> 
-          방 등록/수정/삭제, 예약 확인, 사업자 리뷰, 관리자 승인 및 신고 알람 기능
-        </p>
-        <p><strong>● 담당:</strong> 사업자 리뷰 알림, 관리자 승인/신고 알림, 예약 데이터 흐름 구현</p>
-        <p><a href="https://github.com/KH-Final-2023/breakTime-spring-project" target="_blank">GitHub 보기</a></p>
-        <p><a href="https://www.notion.so/BreakTime-7816ac597cc7400582f1a750d7c45f08" target="_blank">Notion 보기</a></p>
-        <img src="https://github.com/KH-Final-2023/breakTime-spring-project/assets/117423689/6f3f1449-f4fd-4092-a6be-4d876f7dbe2f" alt="메인페이지" />
+      <div class="hero-right">
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="t-dot r"></div>
+            <div class="t-dot y"></div>
+            <div class="t-dot g"></div>
+            <span class="terminal-title">leejoonsuk ~ portfolio</span>
+          </div>
+          <class class="terminal-body">
+            <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">whoami</span></div>
+            <div class="t-out hi">이준석 · fullstack Developer</div>
+            <br />
+            <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">cat skills.json</span></div>
+            <div class="t-out">{ lang: ["Java", "JSP"],</div>
+            <div class="t-out">&nbsp;&nbsp;framework: ["Spring , springboot"],</div>
+            <div class="t-out">&nbsp;&nbsp;db: ["Oracle", "mariaDB","mysql"] </div>
+            <div class="t-out">&nbsp;&nbsp;Deployment,Ops: ["putty", "FileZilla"] </div>
+            <div class="t-out">&nbsp;&nbsp;Version Control: ["svn", "github"] }</div>
+            <br />
+            <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">git log --oneline</span></div>
+            <div class="t-out warn">소명소프트 재직 중</div>
+            <div class="t-out hi">국민대 SW대학원 석사 과정 중</div>
+            <br />
+            <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">./contact.sh</span></div>
+            <div class="t-out hi">✓ wnstjr8923@naver.com</div>
+            <br />
+            <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">./contact.sh</span></div>
+            <div class="t-out hi">01041279732</div>
+            <div class="t-line"><span class="t-prompt">❯</span><span class="t-cursor"></span></div>
+          </class>
+        </div>
       </div>
+    </div>
+    </div>
+  </section>
 
-      <div class="project">
-        <h3>KHTIME (2023.03.13 ~ 2023.04.20)</h3>
-        <p><strong>● 설명:</strong> 학원 수강생 커뮤니티 플랫폼</p>
-        <p><strong>● 사용 기술:</strong> Java, JSP, Servlet, Oracle, Bootstrap</p>
-        <p><strong>● 주요 구현:</strong> 회원가입(이미지 업로드, 유효성 검사), 친구 시스템, 게시판, 메시지</p>
-        <p><strong>● 담당:</strong> 친구 목록/신청/거절, 메시지 팝업, 유저 프로필 등록 처리</p>
-        <p><a href="https://github.com/hongsuk2615/Semi_project" target="_blank">GitHub 보기</a></p>
-        <img src="https://github.com/hongsuk2615/Semi_project/assets/117423274/dc68d98c-6124-454e-bf1b-b52b3511e999" alt="메인페이지" />
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="cards-section">
+      <div class="sec-header reveal">
+        <p class="sec-eyebrow">// projects</p>
+        <h2>주요 프로젝트</h2>
+      </div>
+      <div class="proj-grid">
+
+        <!-- 미디인 - 현재 유지보수 중 -->
+        <div class="proj-card reveal" id="pc1">
+          <div class="proj-top">
+            <div class="proj-icon pi-2">🌐</div>
+            <span class="status-badge s-live"><span class="s-dot"></span>Live · 유지보수 중</span>
+          </div>
+          <h3>홈페이지 미디인</h3>
+          <p class="proj-desc">기업 홈페이지 유지보수 담당. 클라이언트 요구사항 분석, 화면 반영, 이슈 대응, QA까지 전반적인 운영을 맡고 있습니다.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Java</span>
+            <span class="proj-tag">Spring Boot</span>
+            <span class="proj-tag">JSP</span>
+            <span class="proj-tag">MariaDB</span>
+            <span class="proj-tag">IntelliJ</span>
+            <span class="proj-tag accent">Maintenance</span>
+          </div>
+          <a href="https://www.mediin.or.kr/" target="_blank"
+            style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:0.75rem;font-weight:600;font-family:'Space Mono',monospace;color:var(--accent2);text-decoration:none;opacity:0.8;transition:opacity 0.2s;"
+            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗ mediin.or.kr</a>
+        </div>
+
+        <!-- 국가기초학력 - 완료 -->
+        <div class="proj-card reveal" style="transition-delay:0.1s" id="pc2">
+          <div class="proj-top">
+            <div class="proj-icon pi-1">📚</div>
+            <span class="status-badge s-done">✓ 유지보수 완료</span>
+          </div>
+          <h3>국가기초학력 지원 포털</h3>
+          <p class="proj-desc">교육부 산하 공공 포털 유지보수 담당 (2025.06 ~ 2026.04). 요구사항 분석, 화면 개발, 이슈 대응 수행. 이후 사이트 리뉴얼로 업무 종료.
+          </p>
+          <div class="proj-tags">
+            <span class="proj-tag">전자정부프레임워크</span>
+            <span class="proj-tag">Java</span>
+            <span class="proj-tag">JSP</span>
+            <span class="proj-tag">mysql</span>
+            <span class="proj-tag">Eclipse</span>
+            <span class="proj-tag accent">공공기관</span>
+          </div>
+          <a href="https://www.basics.go.kr/bgportal/main" target="_blank"
+            style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:0.75rem;font-weight:600;font-family:'Space Mono',monospace;color:var(--accent2);text-decoration:none;opacity:0.8;transition:opacity 0.2s;"
+            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗ basics.go.kr</a>
+        </div>
+
+        <!-- 일정 서비스 - 개발 중 -->
+        <div class="proj-card reveal" style="transition-delay:0.15s" id="pc3">
+          <div class="proj-top">
+            <div class="proj-icon pi-4">🗓️</div>
+            <span class="status-badge s-dev"><span class="s-dot"></span>Dev · 개발 중</span>
+          </div>
+          <h3>일정 서비스</h3>
+          <p class="proj-desc">소명소프트 사내 일정 관리 서비스 개발 중. 일정 등록·조회·관리 기능 구현. Java Spring 기반 백엔드와 JSP 화면 개발 담당.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Java</span>
+            <span class="proj-tag">Spring</span>
+            <span class="proj-tag">JSP</span>
+            <span class="proj-tag">CUBIRD</span>
+            <span class="proj-tag">SVN</span>
+            <span class="proj-tag accent">In Progress</span>
+          </div>
+          <a href="http://106.247.228.99:18080/" target="_blank"
+            style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:0.75rem;font-weight:600;font-family:'Space Mono',monospace;color:var(--accent2);text-decoration:none;opacity:0.8;transition:opacity 0.2s;"
+            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗ 서비스 바로가기</a>
+        </div>
+
+        <!-- KH 숙박 프로젝트 -->
+        <div class="proj-card reveal" style="transition-delay:0.2s" id="pc4">
+          <div class="proj-top">
+            <div class="proj-icon pi-3">🏨</div>
+            <span class="status-badge s-done">✓ 완료</span>
+          </div>
+          <h3>숙박업소 예약 웹사이트</h3>
+          <p class="proj-desc">간편한 검색으로 숙박업소 조회·예약. 사용자/사업자/관리자 권한 분리. 사업자 등록, 리뷰 관리 등 관리자 페이지 구현. 직관적인 UI/UX 적용.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Java</span>
+            <span class="proj-tag">JSP</span>
+            <span class="proj-tag">Oracle</span>
+            <span class="proj-tag">Eclipse</span>
+            <span class="proj-tag">GitHub</span>
+            <span class="proj-tag accent">팀 프로젝트</span>
+          </div>
+          <a href="https://github.com/KH-Final-2023/breakTime-spring-project" target="_blank"
+            style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:0.75rem;font-weight:600;font-family:'Space Mono',monospace;color:var(--accent2);text-decoration:none;opacity:0.8;transition:opacity 0.2s;"
+            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗ GitHub</a>
+        </div>
+
+        <!-- KH 학원 커뮤니티 프로젝트 -->
+        <div class="proj-card reveal" style="transition-delay:0.25s" id="pc5">
+          <div class="proj-top">
+            <div class="proj-icon pi-1">🏫</div>
+            <span class="status-badge s-done">✓ 완료</span>
+          </div>
+          <h3>학원 커뮤니티 웹사이트</h3>
+          <p class="proj-desc">분반 간 스터디·프로젝트 협업 플랫폼. 기존 대학 커뮤니티 한계 보완, 게시판·알림 기능으로 원활한 네트워킹 환경 구축.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Java</span>
+            <span class="proj-tag">JSP</span>
+            <span class="proj-tag">Oracle</span>
+            <span class="proj-tag">Eclipse</span>
+            <span class="proj-tag">GitHub</span>
+            <span class="proj-tag accent">팀 프로젝트</span>
+          </div>
+          <a href="https://github.com/hongsuk2615/Semi_project" target="_blank"
+            style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:0.75rem;font-weight:600;font-family:'Space Mono',monospace;color:var(--accent2);text-decoration:none;opacity:0.8;transition:opacity 0.2s;"
+            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗ GitHub</a>
+        </div>
 
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Education -->
-    <section data-aos="fade-up">
-      <h2>🎓 Education</h2>
-      <p><strong>학점은행제 컴퓨터공학과 </strong> (2023.10 ~ 2025.02 학사 졸업)</p>
-      <p><strong>부천대학교 지능로봇과</strong> (2016.03 ~ 2021.02 전문 학사 졸업)</p>
-    </section>
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="skills-section">
+      <div class="sec-header reveal">
+        <p class="sec-eyebrow">// stack</p>
+        <h2>기술 스택</h2>
+      </div>
+      <div class="skills-orbs reveal">
+        <span class="orb g1">Java</span>
+        <span class="orb g1">Spring</span>
+        <span class="orb g1">Spring Boot</span>
+        <span class="orb g2">JSP</span>
+        <span class="orb g3">Oracle, MariaDB, MySQL, CUBRID</span>
+        <span class="orb g1">Node.js</span>
+        <span class="orb g2">Vue</span>
+        <span class="orb g4">SVN, GitHub</span>
+        <span class="orb g4">putty, FileZilla</span>
+        <span class="orb g3">IntelliJ</span>
+        <span class="orb g3">Eclipse</span>
+      </div>
+    </div>
+  </section>
 
-    <!-- Experience -->
-    <section data-aos="fade-up">
-      <h2>💼 Experience</h2>
-      <ul>
-        <li><strong>인프라칩</strong> – IoT 대시보드 개발 인턴 (2025.03 ~ 2025.06)</li>
-        <li><strong>케이원</strong> – 이벤트 모니터링 및 콘솔 작업 (2024.01 ~ 2025.03)</li>
-        <li><strong>HTNC</strong> – 사무보조 및 Arduino LED 실습 (2020.10 ~ 2020.12)</li>
-      </ul>
-    </section>
+  <!-- EXPERIENCE -->
+  <section id="exp">
+    <div class="exp-section">
+      <div class="sec-header reveal">
+        <p class="sec-eyebrow">// about</p>
+        <h2>경력</h2>
+      </div>
+      <div class="exp-timeline">
 
-    <!-- Certifications -->
-    <section data-aos="fade-up">
-      <h2>📜 Certifications</h2>
-      <ul>
-        <li>정보처리기사 (2024.12)</li>
-        <li>정보처리산업기사 (2024.09)</li>
-        <li>SQLD (2024.04)</li>
-        <li>실용글쓰기 준3급, 한국사 1급, 운전면허 1종</li>
-      </ul>
-    </section>
+        <!-- 소명소프트 현재 재직 -->
+        <div class="exp-item current reveal">
+          <div class="exp-date"><span class="exp-now">재직 중</span><br />2025.06 —<br />2026.04 퇴사 예정</div>
+          <div class="exp-content">
+            <h3>SI 사업부</h3>
+            <p class="exp-co">소명소프트</p>
+            <p class="exp-desc">국가기초학력 지원 포털 유지보수, 홈페이지 미디인 유지보수, 사내 일정 서비스 개발 담당. FTP·SSH를 통한 서버 배포 및 운영 환경 작업 수행.</p>
+            <div class="exp-tags">
+              <span class="exp-tag">Java</span><span class="exp-tag">Spring</span><span class="exp-tag">Spring
+                Boot</span><span class="exp-tag">JSP</span><span class="exp-tag">Oracle</span><span
+                class="exp-tag">MariaDB</span><span class="exp-tag">SVN</span><span
+                class="exp-tag">FileZilla</span><span class="exp-tag">PuTTY</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 인프라칩 인턴 -->
+        <div class="exp-item reveal">
+          <div class="exp-date">2025.03 —<br />2025.06</div>
+          <div class="exp-content">
+            <h3>개발연구 인턴</h3>
+            <p class="exp-co">인프라칩</p>
+            <p class="exp-desc">IoT 통신 데이터 기반 대시보드 개발 및 사내 서비스 개발 담당.</p>
+            <div class="exp-tags">
+              <span class="exp-tag">Node.js</span><span class="exp-tag">Vue</span><span class="exp-tag">MySQL</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 케이원 -->
+        <div class="exp-item reveal">
+          <div class="exp-date">2024.01 —<br />2025.03</div>
+          <div class="exp-content">
+            <h3>디지털기획팀 사원</h3>
+            <p class="exp-co">케이원</p>
+            <p class="exp-desc">IDC 서버 이벤트 모니터링, 콘솔 작업, 엔지니어 안내 담당. 업무 매뉴얼 직접 작성·공유하여 팀 효율 개선.</p>
+            <div class="exp-tags">
+              <span class="exp-tag">IDC</span><span class="exp-tag">서버 모니터링</span><span class="exp-tag">운영</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sec-header reveal">
+          <p class="sec-eyebrow">// about</p>
+          <h2>학력</h2>
+        </div>
+
+        <!-- 국민대 대학원 -->
+        <div class="exp-item current reveal">
+          <div class="exp-date"><span class="exp-now">재학 중</span><br />2025.09 —<br />2026.12 예정</div>
+          <div class="exp-content">
+            <h3>소프트웨어 석사 과정</h3>
+            <p class="exp-co">국민대학교 소프트웨어융합대학원 · 소프트웨어전공</p>
+            <p class="exp-desc">학점 4.0 / 4.5 · 소프트웨어 융합 심화 과정 이수 중.</p>
+            <div class="exp-tags">
+              <span class="exp-tag">대학원</span><span class="exp-tag">GPA 4.0/4.5</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- KH 교육원 -->
+        <div class="exp-item reveal">
+          <div class="exp-date">2022.11 —<br />2023.06</div>
+          <div class="exp-content">
+            <h3>스마트 웹 컨텐츠 UI/UX 과정 수료</h3>
+            <p class="exp-co">KH정보교육원</p>
+            <p class="exp-desc">학원 커뮤니티 웹사이트, 숙박 예약 웹사이트 팀 프로젝트 수행. Java · Spring · Oracle · JSP 기반 풀스택 개발.</p>
+            <div class="exp-tags">
+              <span class="exp-tag">Java</span><span class="exp-tag">Spring</span><span
+                class="exp-tag">Oracle</span><span class="exp-tag">JSP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 학점은행제 -->
+        <div class="exp-item reveal">
+          <div class="exp-date">2023.10 —<br />2025.02</div>
+          <div class="exp-content">
+            <h3>컴퓨터공학 학사 졸업</h3>
+            <p class="exp-co">학점은행제 · 학점 4.44 / 4.5</p>
+            <p class="exp-desc">최우수 학점으로 컴퓨터공학 학사 취득.</p>
+            <div class="exp-tags">
+              <span class="exp-tag">GPA 4.44/4.5</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 부천대 -->
+        <div class="exp-item reveal">
+          <div class="exp-date">2016.03 —<br />2021.03</div>
+          <div class="exp-content">
+            <h3>지능로봇과 졸업</h3>
+            <p class="exp-co">부천대학교</p>
+            <p class="exp-desc">Android Studio + Arduino 기반 "기타 치는 로봇" 졸업 작품 개발. 졸업작품 부문 우수상 수상 (2020).</p>
+            <div class="exp-tags">
+              <span class="exp-tag">Android Studio</span><span class="exp-tag">Arduino</span><span class="exp-tag">우수상
+                🏆</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section>
+    <div class="cert-section">
+      <div class="sec-header reveal">
+        <p class="sec-eyebrow">// certifications</p>
+        <h2>자격증</h2>
+      </div>
+      <div class="cert-grid reveal">
+        <div class="cert-card">
+          <p class="cert-year">2024.12</p>
+          <p class="cert-name">정보처리기사</p>
+          <p class="cert-org">한국산업인력공단</p>
+        </div>
+        <div class="cert-card">
+          <p class="cert-year">2024.09</p>
+          <p class="cert-name">정보처리산업기사</p>
+          <p class="cert-org">한국산업인력공단</p>
+        </div>
+        <div class="cert-card">
+          <p class="cert-year">2024.04</p>
+          <p class="cert-name">SQLD (SQL 개발자)</p>
+          <p class="cert-org">한국데이터산업진흥원</p>
+        </div>
+        <div class="cert-card">
+          <p class="cert-year">2021.11</p>
+          <p class="cert-name">한국사능력검정시험 1급</p>
+          <p class="cert-org">국사편찬위원회</p>
+        </div>
+        <div class="cert-card">
+          <p class="cert-year">2021.12</p>
+          <p class="cert-name">한국실용글쓰기 준3급</p>
+          <p class="cert-org">한국국어능력평가협회</p>
+        </div>
+        <div class="cert-card">
+          <p class="cert-year">2018.05</p>
+          <p class="cert-name">1종보통운전면허</p>
+          <p class="cert-org">경찰청</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <div class="contact-section" id="contact">
+    <h2 class="contact-glow reveal">함께 만들어요 <span class="grad">✦</span></h2>
+    <p class="contact-sub reveal">새로운 기회나 협업 제안은 언제든지 환영합니다.</p>
+    <div class="contact-row reveal">
+      <a class="c-btn main" href="mailto:wnstjr8923@naver.com">✉️ wnstjr8923@naver.com</a>
+      <a class="c-btn" href="tel:010-4127-9732">📞 010-4127-9732</a>
+    </div>
   </div>
 
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <footer>
+    <span>_LJS · 이준석</span>
+    <span>© 2026 · Bucheon, Korea</span>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
-    AOS.init({
-      duration: 800,
-      easing: 'ease-in-out',
-      once: true
+    const canvas = document.getElementById('bg-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.z = 6;
+
+    const count = 1800;
+    const geo = new THREE.BufferGeometry();
+    const pos = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+    const colPalette = [
+      new THREE.Color('#7c6aff'),
+      new THREE.Color('#00f5d4'),
+      new THREE.Color('#ff6b6b'),
+      new THREE.Color('#febc2e'),
+    ];
+    for (let i = 0; i < count; i++) {
+      pos[i * 3] = (Math.random() - 0.5) * 20;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 20;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 20;
+      const c = colPalette[Math.floor(Math.random() * colPalette.length)];
+      colors[i * 3] = c.r; colors[i * 3 + 1] = c.g; colors[i * 3 + 2] = c.b;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    const mat = new THREE.PointsMaterial({ size: 0.045, vertexColors: true, transparent: true, opacity: 0.7 });
+    const particles = new THREE.Points(geo, mat);
+    scene.add(particles);
+
+    function makeShape(geometry, color, x, y, z) {
+      const m = new THREE.MeshBasicMaterial({ color, wireframe: true, transparent: true, opacity: 0.15 });
+      const mesh = new THREE.Mesh(geometry, m);
+      mesh.position.set(x, y, z);
+      scene.add(mesh);
+      return mesh;
+    }
+    const shapes = [
+      makeShape(new THREE.IcosahedronGeometry(1.2, 1), 0x7c6aff, -3, 1, -2),
+      makeShape(new THREE.OctahedronGeometry(0.9), 0x00f5d4, 3.5, -1, -1),
+      makeShape(new THREE.TorusGeometry(0.8, 0.25, 8, 24), 0xff6b6b, 0, -2.5, -1),
+    ];
+
+    let mx = 0, my = 0;
+    document.addEventListener('mousemove', e => {
+      mx = (e.clientX / window.innerWidth - 0.5) * 2;
+      my = -(e.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    document.querySelectorAll('.proj-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+        card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+      });
+    });
+
+    let t = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      t += 0.005;
+      particles.rotation.y += 0.0008;
+      particles.rotation.x += 0.0003;
+      camera.position.x += (mx * 0.5 - camera.position.x) * 0.03;
+      camera.position.y += (my * 0.3 - camera.position.y) * 0.03;
+      camera.lookAt(scene.position);
+      shapes.forEach((s, i) => {
+        s.rotation.x = t * (0.3 + i * 0.1);
+        s.rotation.y = t * (0.2 + i * 0.15);
+        s.position.y += Math.sin(t + i) * 0.003;
+      });
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.reveal').forEach(el => {
+        if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('on');
+      });
     });
   </script>
 </body>
+
 </html>
