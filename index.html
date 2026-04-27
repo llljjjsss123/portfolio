@@ -143,17 +143,9 @@
       border-radius: 50%;
     }
 
-    .t-dot.r {
-      background: #ff5f57;
-    }
-
-    .t-dot.y {
-      background: #febc2e;
-    }
-
-    .t-dot.g {
-      background: #28c840;
-    }
+    .t-dot.r { background: #ff5f57; }
+    .t-dot.y { background: #febc2e; }
+    .t-dot.g { background: #28c840; }
 
     .terminal-title {
       font-family: 'Space Mono', monospace;
@@ -174,26 +166,11 @@
       gap: 8px;
     }
 
-    .t-prompt {
-      color: var(--accent2);
-    }
-
-    .t-cmd {
-      color: var(--ink);
-    }
-
-    .t-out {
-      color: var(--muted);
-      padding-left: 16px;
-    }
-
-    .t-out.hi {
-      color: var(--accent2);
-    }
-
-    .t-out.warn {
-      color: #febc2e;
-    }
+    .t-prompt { color: var(--accent2); }
+    .t-cmd { color: var(--ink); }
+    .t-out { color: var(--muted); padding-left: 16px; }
+    .t-out.hi { color: var(--accent2); }
+    .t-out.warn { color: #febc2e; }
 
     .t-cursor {
       display: inline-block;
@@ -205,15 +182,8 @@
     }
 
     @keyframes blink {
-
-      0%,
-      100% {
-        opacity: 1
-      }
-
-      50% {
-        opacity: 0
-      }
+      0%, 100% { opacity: 1 }
+      50% { opacity: 0 }
     }
 
     .hero-tag {
@@ -366,6 +336,7 @@
       cursor: default;
     }
 
+    /* ★ 핵심 fix: pseudo 오버레이가 링크 클릭 막지 않도록 */
     .proj-card::before {
       content: '';
       position: absolute;
@@ -373,6 +344,7 @@
       background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(124, 106, 255, 0.08), transparent 60%);
       opacity: 0;
       transition: opacity 0.3s;
+      pointer-events: none;
     }
 
     .proj-card:hover {
@@ -382,6 +354,12 @@
 
     .proj-card:hover::before {
       opacity: 1;
+    }
+
+    /* ★ 핵심 fix: 카드 내 링크가 오버레이 위로 올라오도록 */
+    .proj-card a {
+      position: relative;
+      z-index: 1;
     }
 
     .proj-top {
@@ -402,21 +380,11 @@
       border: 1px solid var(--border);
     }
 
-    .pi-1 {
-      background: linear-gradient(135deg, rgba(124, 106, 255, 0.2), rgba(124, 106, 255, 0.05));
-    }
-
-    .pi-2 {
-      background: linear-gradient(135deg, rgba(0, 245, 212, 0.2), rgba(0, 245, 212, 0.05));
-    }
-
-    .pi-3 {
-      background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 107, 107, 0.05));
-    }
-
-    .pi-4 {
-      background: linear-gradient(135deg, rgba(254, 188, 46, 0.2), rgba(254, 188, 46, 0.05));
-    }
+    .pi-1 { background: linear-gradient(135deg, rgba(124, 106, 255, 0.2), rgba(124, 106, 255, 0.05)); }
+    .pi-2 { background: linear-gradient(135deg, rgba(0, 245, 212, 0.2), rgba(0, 245, 212, 0.05)); }
+    .pi-3 { background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 107, 107, 0.05)); }
+    .pi-4 { background: linear-gradient(135deg, rgba(254, 188, 46, 0.2), rgba(254, 188, 46, 0.05)); }
+    .pi-5 { background: linear-gradient(135deg, rgba(192, 132, 252, 0.2), rgba(192, 132, 252, 0.05)); }
 
     .status-badge {
       display: inline-flex;
@@ -447,6 +415,12 @@
       background: rgba(254, 188, 46, 0.1);
       color: #febc2e;
       border: 1px solid rgba(254, 188, 46, 0.2);
+    }
+
+    .s-aws {
+      background: rgba(192, 132, 252, 0.1);
+      color: #c084fc;
+      border: 1px solid rgba(192, 132, 252, 0.2);
     }
 
     .s-dot {
@@ -490,6 +464,11 @@
     .proj-tag.accent {
       border-color: rgba(124, 106, 255, 0.4);
       color: var(--accent);
+    }
+
+    .proj-tag.aws {
+      border-color: rgba(192, 132, 252, 0.4);
+      color: #c084fc;
     }
 
     .skills-section {
@@ -536,25 +515,12 @@
       transform: scale(1.05);
     }
 
-    .orb:hover::before {
-      opacity: 1;
-    }
+    .orb:hover::before { opacity: 1; }
 
-    .orb.g1 {
-      --glow: rgba(124, 106, 255, 0.15);
-    }
-
-    .orb.g2 {
-      --glow: rgba(0, 245, 212, 0.15);
-    }
-
-    .orb.g3 {
-      --glow: rgba(255, 107, 107, 0.15);
-    }
-
-    .orb.g4 {
-      --glow: rgba(254, 188, 46, 0.15);
-    }
+    .orb.g1 { --glow: rgba(124, 106, 255, 0.15); }
+    .orb.g2 { --glow: rgba(0, 245, 212, 0.15); }
+    .orb.g3 { --glow: rgba(255, 107, 107, 0.15); }
+    .orb.g4 { --glow: rgba(254, 188, 46, 0.15); }
 
     .exp-section {
       padding: 80px 60px;
@@ -654,7 +620,6 @@
       background: var(--surface);
     }
 
-    /* CERT SECTION */
     .cert-section {
       padding: 80px 60px;
       max-width: 1200px;
@@ -787,9 +752,7 @@
     }
 
     @media(max-width:768px) {
-      nav {
-        padding: 16px 20px;
-      }
+      nav { padding: 16px 20px; }
 
       .hero {
         flex-direction: column;
@@ -797,9 +760,7 @@
         gap: 40px;
       }
 
-      .hero-right {
-        display: none;
-      }
+      .hero-right { display: none; }
 
       .cards-section,
       .skills-section,
@@ -810,13 +771,8 @@
         padding-right: 20px;
       }
 
-      .proj-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .cert-grid {
-        grid-template-columns: 1fr;
-      }
+      .proj-grid { grid-template-columns: 1fr; }
+      .cert-grid { grid-template-columns: 1fr; }
 
       .exp-item {
         grid-template-columns: 1fr;
@@ -824,9 +780,10 @@
       }
 
       .exp-item::before,
-      .exp-item::after {
-        display: none;
-      }
+      .exp-item::after { display: none; }
+    }
+    #projects, #skills, #exp, #contact {
+      scroll-margin-top: 80px;
     }
   </style>
 </head>
@@ -868,16 +825,16 @@
             <div class="t-dot g"></div>
             <span class="terminal-title">leejoonsuk ~ portfolio</span>
           </div>
-          <class class="terminal-body">
+          <div class="terminal-body">
             <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">whoami</span></div>
             <div class="t-out hi">이준석 · fullstack Developer</div>
             <br />
             <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">cat skills.json</span></div>
-            <div class="t-out">{ lang: ["Java", "JSP"],</div>
-            <div class="t-out">&nbsp;&nbsp;framework: ["Spring , SpringBoot"],</div>
-            <div class="t-out">&nbsp;&nbsp;db: ["Oracle", "mariaDB","mysql","CUBRID"],</div>
-            <div class="t-out">&nbsp;&nbsp;Deployment,Ops: ["putty", "FileZilla"],</div>
-            <div class="t-out">&nbsp;&nbsp;Version Control: ["svn", "github"] }</div>
+            <div class="t-out">{ lang: [Java,JSP]</div>
+            <div class="t-out">&nbsp;&nbsp;framework: [Spring,SpringBoot]</div>
+            <div class="t-out">&nbsp;&nbsp;db: [Oracle, mariaDB,mysql,CUBRID]</div>
+            <div class="t-out">&nbsp;&nbsp;Deployment,Ops: [putty,FileZilla]</div>
+            <div class="t-out">&nbsp;&nbsp;Version Control: [svn,github] }</div>
             <br />
             <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">git log --oneline</span></div>
             <div class="t-out warn">소명소프트 재직 중</div>
@@ -886,10 +843,9 @@
             <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">./contact.sh</span></div>
             <div class="t-out hi">✓ wnstjr8923@naver.com</div>
             <div class="t-line"><span class="t-prompt">❯</span><span class="t-cursor"></span></div>
-          </class>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   </section>
 
@@ -902,14 +858,14 @@
       </div>
       <div class="proj-grid">
 
-        <!-- 미디인 - 현재 유지보수 중 -->
+        <!-- 미디인 -->
         <div class="proj-card reveal" id="pc1">
           <div class="proj-top">
             <div class="proj-icon pi-2">🌐</div>
             <span class="status-badge s-live"><span class="s-dot"></span>Live · 유지보수 중</span>
           </div>
           <h3>홈페이지 미디인</h3>
-          <p class="proj-desc">기업 홈페이지 유지보수(SM) 담당. 클라이언트 요구사항 분석 , 개발 및 테스트,  품질관리까지 전반적인 운영을 맡고 있습니다..</p>
+          <p class="proj-desc">기업 홈페이지 유지보수(SM) 담당. 클라이언트 요구사항 분석, 개발 및 테스트, 품질관리까지 전반적인 운영을 맡고 있습니다.</p>
           <div class="proj-tags">
             <span class="proj-tag">Java</span>
             <span class="proj-tag">Spring Boot</span>
@@ -923,15 +879,14 @@
             onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗ mediin.or.kr</a>
         </div>
 
-        <!-- 국가기초학력 - 완료 -->
+        <!-- 국가기초학력 -->
         <div class="proj-card reveal" style="transition-delay:0.1s" id="pc2">
           <div class="proj-top">
             <div class="proj-icon pi-1">📚</div>
             <span class="status-badge s-done">✓ 유지보수 완료</span>
           </div>
           <h3>국가기초학력 지원 포털</h3>
-          <p class="proj-desc">교육부 산하 공공 포털 유지보수 담당 (2025.06 ~ 2026.12). 요구사항 분석, 화면 개발, 이슈 대응 수행. 이후 사이트 리뉴얼로 업무 종료.
-          </p>
+          <p class="proj-desc">교육부 산하 공공 포털 유지보수 담당 (2025.06 ~ 2026.12). 요구사항 분석, 화면 개발, 이슈 대응 수행. 이후 사이트 리뉴얼로 업무 종료.</p>
           <div class="proj-tags">
             <span class="proj-tag">전자정부프레임워크</span>
             <span class="proj-tag">Java</span>
@@ -945,7 +900,7 @@
             onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗ basics.go.kr</a>
         </div>
 
-        <!-- 일정 서비스 - 개발 중 -->
+        <!-- 일정 서비스 -->
         <div class="proj-card reveal" style="transition-delay:0.15s" id="pc3">
           <div class="proj-top">
             <div class="proj-icon pi-4">🗓️</div>
@@ -957,7 +912,7 @@
             <span class="proj-tag">Java</span>
             <span class="proj-tag">Spring</span>
             <span class="proj-tag">JSP</span>
-            <span class="proj-tag">CUBIRD</span>
+            <span class="proj-tag">CUBRID</span>
             <span class="proj-tag">SVN</span>
             <span class="proj-tag accent">In Progress</span>
           </div>
@@ -966,7 +921,7 @@
             onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗ 서비스 바로가기</a>
         </div>
 
-                <!-- VOID BREAKER - 새로 추가 -->
+        <!-- VOID BREAKER -->
         <div class="proj-card reveal" style="transition-delay:0.18s" id="pc-void">
           <div class="proj-top">
             <div class="proj-icon pi-5">🚀</div>
@@ -981,10 +936,12 @@
             <span class="proj-tag aws">Nginx</span>
             <span class="proj-tag accent">직접 배포</span>
           </div>
-          <a href="http://43.200.178.250/game.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:0.75rem;font-weight:600;font-family:'Space Mono',monospace;color:#c084fc;text-decoration:none;opacity:0.8;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗ 게임 플레이</a>
+          <a href="http://43.200.178.250/game.html" target="_blank"
+            style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:0.75rem;font-weight:600;font-family:'Space Mono',monospace;color:#c084fc;text-decoration:none;opacity:0.8;transition:opacity 0.2s;"
+            onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗ 게임 플레이</a>
         </div>
-        
-        <!-- KH 숙박 프로젝트 -->
+
+        <!-- 숙박 예약 -->
         <div class="proj-card reveal" style="transition-delay:0.2s" id="pc4">
           <div class="proj-top">
             <div class="proj-icon pi-3">🏨</div>
@@ -1005,7 +962,7 @@
             onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗ GitHub</a>
         </div>
 
-        <!-- KH 학원 커뮤니티 프로젝트 -->
+        <!-- 학원 커뮤니티 -->
         <div class="proj-card reveal" style="transition-delay:0.25s" id="pc5">
           <div class="proj-top">
             <div class="proj-icon pi-1">🏫</div>
@@ -1061,7 +1018,6 @@
       </div>
       <div class="exp-timeline">
 
-        <!-- 소명소프트 현재 재직 -->
         <div class="exp-item current reveal">
           <div class="exp-date"><span class="exp-now">재직 중</span><br />2025.06 —</div>
           <div class="exp-content">
@@ -1069,15 +1025,11 @@
             <p class="exp-co">소명소프트</p>
             <p class="exp-desc">국가기초학력 지원 포털 유지보수, 홈페이지 미디인 유지보수, 사내 일정 서비스 개발 담당. FTP·SSH를 통한 서버 배포 및 운영 환경 작업 수행.</p>
             <div class="exp-tags">
-              <span class="exp-tag">Java</span><span class="exp-tag">Spring</span><span class="exp-tag">Spring
-                Boot</span><span class="exp-tag">JSP</span><span class="exp-tag">Oracle</span><span
-                class="exp-tag">MariaDB</span><span class="exp-tag">SVN</span><span
-                class="exp-tag">FileZilla</span><span class="exp-tag">PuTTY</span>
+              <span class="exp-tag">Java</span><span class="exp-tag">Spring</span><span class="exp-tag">Spring Boot</span><span class="exp-tag">JSP</span><span class="exp-tag">Oracle</span><span class="exp-tag">MariaDB</span><span class="exp-tag">SVN</span><span class="exp-tag">FileZilla</span><span class="exp-tag">PuTTY</span>
             </div>
           </div>
         </div>
 
-        <!-- 인프라칩 인턴 -->
         <div class="exp-item reveal">
           <div class="exp-date">2025.03 —<br />2025.06</div>
           <div class="exp-content">
@@ -1090,7 +1042,6 @@
           </div>
         </div>
 
-        <!-- 케이원 -->
         <div class="exp-item reveal">
           <div class="exp-date">2024.01 —<br />2025.03</div>
           <div class="exp-content">
@@ -1103,12 +1054,11 @@
           </div>
         </div>
 
-        <div class="sec-header reveal">
-          <p class="sec-eyebrow">// about</p>
+        <div class="sec-header reveal" style="margin-top:48px;">
+          <p class="sec-eyebrow">// education</p>
           <h2>학력</h2>
         </div>
 
-        <!-- 국민대 대학원 -->
         <div class="exp-item current reveal">
           <div class="exp-date"><span class="exp-now">재학 중</span><br />2025.09 —<br />2026.12 예정</div>
           <div class="exp-content">
@@ -1121,7 +1071,6 @@
           </div>
         </div>
 
-        <!-- KH 교육원 -->
         <div class="exp-item reveal">
           <div class="exp-date">2022.11 —<br />2023.06</div>
           <div class="exp-content">
@@ -1129,13 +1078,11 @@
             <p class="exp-co">KH정보교육원</p>
             <p class="exp-desc">학원 커뮤니티 웹사이트, 숙박 예약 웹사이트 팀 프로젝트 수행. Java · Spring · Oracle · JSP 기반 풀스택 개발.</p>
             <div class="exp-tags">
-              <span class="exp-tag">Java</span><span class="exp-tag">Spring</span><span
-                class="exp-tag">Oracle</span><span class="exp-tag">JSP</span>
+              <span class="exp-tag">Java</span><span class="exp-tag">Spring</span><span class="exp-tag">Oracle</span><span class="exp-tag">JSP</span>
             </div>
           </div>
         </div>
 
-        <!-- 학점은행제 -->
         <div class="exp-item reveal">
           <div class="exp-date">2023.10 —<br />2025.02</div>
           <div class="exp-content">
@@ -1148,7 +1095,6 @@
           </div>
         </div>
 
-        <!-- 부천대 -->
         <div class="exp-item reveal">
           <div class="exp-date">2016.03 —<br />2021.03</div>
           <div class="exp-content">
@@ -1156,8 +1102,7 @@
             <p class="exp-co">부천대학교</p>
             <p class="exp-desc">Android Studio + Arduino 기반 "기타 치는 로봇" 졸업 작품 개발. 졸업작품 부문 우수상 수상 (2020).</p>
             <div class="exp-tags">
-              <span class="exp-tag">Android Studio</span><span class="exp-tag">Arduino</span><span class="exp-tag">우수상
-                🏆</span>
+              <span class="exp-tag">Android Studio</span><span class="exp-tag">Arduino</span><span class="exp-tag">우수상 🏆</span>
             </div>
           </div>
         </div>
@@ -1209,13 +1154,13 @@
   </section>
 
   <!-- CONTACT -->
-  <div class="contact-section" id="contact">
+  <section class="contact-section" id="contact">
     <h2 class="contact-glow reveal">함께 만들어요 <span class="grad">✦</span></h2>
     <p class="contact-sub reveal">새로운 기회나 협업 제안은 언제든지 환영합니다.</p>
     <div class="contact-row reveal">
       <a class="c-btn main" href="mailto:wnstjr8923@naver.com">✉️ wnstjr8923@naver.com</a>
     </div>
-  </div>
+  </section>
 
   <footer>
     <span>_LJS · 이준석</span>
