@@ -385,8 +385,9 @@
             <div class="t-out">{ lang: [Java,JSP]</div>
             <div class="t-out">&nbsp;&nbsp;framework: [Spring,SpringBoot]</div>
             <div class="t-out">&nbsp;&nbsp;db: [Oracle, mariaDB,mysql,CUBRID]</div>
-            <div class="t-out">&nbsp;&nbsp;Deployment,Ops: [putty,FileZilla]</div>
-            <div class="t-out">&nbsp;&nbsp;Version Control: [svn,github] }</div><br />
+            <div class="t-out">&nbsp;&nbsp;Deployment,Ops: [putty,FileZila]</div>
+            <div class="t-out">&nbsp;&nbsp;Version Control: [svn,github]</div>
+            <div class="t-out">&nbsp;&nbsp;Server: [AWS,GCP] }</div><br />
             <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">git log --oneline</span></div>
             <div class="t-out hi">국민대 SW대학원 석사 과정 중</div><br />
             <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">./contact.sh</span></div>
@@ -544,15 +545,14 @@
             <span class="status-badge s-done">✓ 완료</span>
           </div>
           <h3>유통과정 ERP · 매입·매출 회계 시스템</h3>
-          <p class="proj-desc">매입·매출 등록부터 증빙서류 발행, 회계 처리까지 여러 화면에 흩어져 있던 유통 업무 흐름을 하나의 시스템으로 통합했습니다. 거래 하나가 등록되면 인보이스·견적서 같은 증빙서류와 전표·세금계산서 등 회계 처리, 정산까지 자연스럽게 이어지도록 설계했고, 영세율을 포함한 부가세 처리도 함께 구현했습니다. GCP 환경에서 여러 시스템 간 데이터가 어긋나지 않도록 동기화 구조도 만들었습니다.</p>
+          <p class="proj-desc">매입·매출 등록부터 증빙서류 발행, 회계 처리, 정산까지 이어지는 유통 업무를 하나의 시스템으로 통합. 부가세(영세율 포함) 처리와 GCP 기반 배포 환경 설정</p>
           <div class="proj-tags">
-            <span class="proj-tag">Java</span>
-            <span class="proj-tag">Spring Boot</span>
-            <span class="proj-tag">JSP</span>
-            <span class="proj-tag">MariaDB</span>
-            <span class="proj-tag accent">회계/재무</span>
-            <span class="proj-tag accent">부가세</span>
+            <span class="proj-tag">Next.js</span>
+            <span class="proj-tag">Node.js</span>
+            <span class="proj-tag">TypeScript</span>
+            <span class="proj-tag">PostgerDB</span>
             <span class="proj-tag accent">GCP</span>
+            <span class="proj-tag accent">ERP</span>
           </div>
           <div class="proj-actions">
             <button class="detail-btn" onclick="openModal('modal-erp')">📋 상세 보기</button>
@@ -813,10 +813,10 @@
         <div>
           <div class="modal-section-title">Tech Stack</div>
           <div class="stack-row">
-            <span class="stack-badge hi">Java</span>
-            <span class="stack-badge hi">Spring Boot</span>
-            <span class="stack-badge hi">JSP</span>
-            <span class="stack-badge">MariaDB</span>
+            <span class="stack-badge hi">Next.js</span>
+            <span class="stack-badge hi">TypeScript</span>
+            <span class="stack-badge hi">Node.js</span>
+            <span class="stack-badge hi2">PostgreDB</span>
             <span class="stack-badge hi2">GCP</span>
           </div>
         </div>
@@ -863,10 +863,10 @@
               <div class="hc-title">조직도 · 업체 · 상품 · 재고 관리</div>
               <div class="hc-desc">매입·매출·회계 모듈마다 기준 정보를 따로 관리하던 구조를, 조직도·업체·상품·단가·재고 정보를 마스터 데이터로 통합해 전 모듈이 같은 기준 정보를 참조하도록 바꿨습니다.</div>
             </div>
-            <div class="highlight-card">
-              <div class="hc-label">☁️ 인프라</div>
-              <div class="hc-title">GCP 기반 데이터 동기화(Pooling Sync)</div>
-              <div class="hc-desc">여러 시스템에 흩어져 있던 매입/매출·재고 데이터가 서로 어긋나는 문제를 막기 위해, GCP 환경에서 데이터를 동기화하는 풀링(Pooling) 흐름을 설계하고 구축했습니다.</div>
+              <div class="highlight-card">
+              <div class="hc-label">GCP</div>
+              <div class="hc-title">GCP 기반 자동화 배포 및 데이터 동기화 인프라</div>
+              <div class="hc-desc">Cloud Scheduler로 세금계산서·은행거래 데이터를 자동 수집하고, 테스트를 거쳐 무중단으로 배포합니다. 웹 서비스는 인증 후 Cloud SQL에 안전하게 접근하며, 외부 API 연동과 증빙 파일 저장, 민감 정보 관리, 오류 모니터링까지 GCP 환경에서 일괄 처리하도록 구성했습니다.</div>
             </div>
           </div>
         </div>
@@ -914,7 +914,7 @@
             <p class="exp-co">(주)풀링포레스트</p>
             <p class="exp-desc">유통 ERP 웹 개발 담당.</p>
             <div class="exp-tags">
-              <span class="exp-tag">웹개발자</span><span class="exp-tag">ERP</span><span class="exp-tag">바이브코딩</span>
+              <span class="exp-tag">Next.js</span><span class="exp-tag">Node.js</span><span class="exp-tag">TypeScript</span><span class="exp-tag">PostgreDB</span><span class="exp-tag">바이브코딩</span><span class="exp-tag">ERP</span>
             </div>
           </div>
         </div>
@@ -967,7 +967,7 @@
             <p class="exp-co">국민대학교 소프트웨어융합대학원 · 소프트웨어전공</p>
             <p class="exp-desc">학점 4.0 / 4.5 · 소프트웨어 융합 심화 과정 이수 중.</p>
             <div class="exp-tags">
-              <span class="exp-tag">대학원</span><span class="exp-tag">GPA 4.0/4.5</span>
+              <span class="exp-tag">대학원</span><span class="exp-tag">GPA 4.13/4.5</span>
             </div>
           </div>
         </div>
